@@ -2,7 +2,7 @@ library(data.table)
 library(ggplot2)
 library(writexl)
 
-#získání všech skore pro daný traint do 1 tabulky se všemi pacienty
+#ziaskani vsech skore pro dany trait do 1 tabulky se vsemi pacienty
 soubory1 <- list.files(path = getwd(), pattern = "\\.tsv$", full.names = TRUE)
 soubory2 <- list.files(path = "C:/Users/Admin/Documents/PolygenicRiskScore/411_results", pattern = "\\.tsv$", full.names = TRUE)
 soubory <- c(soubory1,soubory2)
@@ -20,7 +20,7 @@ seznam_dt <- lapply(soubory, function(soubor) {
 names(seznam_dt) <- tools::file_path_sans_ext(basename(soubory))
 vysledek <- rbindlist(seznam_dt, idcol = "soubor")
 
-#ziskani jedne souhrne tabulky medianu pro každého pacient
+#ziskani souhrne tabulky pro kazdeho pacienta
 zpracuj_skore <- function(s) {
   if (is.na(s)) return(NA_real_)
   s <- as.character(s)
@@ -34,25 +34,25 @@ zpracuj_skore <- function(s) {
 vysledky <- lapply(soubory, function(soubor) {
   dt <- fread(soubor)
   
-  # Ověření přítomnosti nutných sloupců
+  # overeni pritomnosti nutnych sloupcu
   if (!all(c("Trait", "Polygenic Risk Score") %in% names(dt))) {
     message("Přeskakuji soubor: ", basename(soubor), " (chybí sloupce)")
     return(NULL)
   }
   
-  # Filtrování podle požadovaných traitů
+  # filtrovani podle pozadovanych traitu
   dt_filtr <- dt[Trait %in% traits_zajem]
   if (nrow(dt_filtr) == 0) return(NULL) 
   
-  # Zpracování percentilů
+  # Zpracovani percentilu
   skore_cisla <- sapply(dt_filtr$Percentile, zpracuj_skore)
   prumer_perc <- median(skore_cisla, na.rm = TRUE)
   
-  # Medián PRS (převedeme na čísla pro jistotu)
+  # Median PRS (prevedeme na cisla pro jistotu)
   dt_filtr[, `Polygenic Risk Score` := as.numeric(`Polygenic Risk Score`)]
   median_prs <- median(dt_filtr$`Polygenic Risk Score`, na.rm = TRUE)
   
-  # Výstup pro jednoho pacienta
+  # Vystup pro jednoho pacienta
   data.table(
     Pacient = tools::file_path_sans_ext(basename(soubor)),
     MedianScore = prumer_perc,
@@ -60,12 +60,12 @@ vysledky <- lapply(soubory, function(soubor) {
   )
 })
 
-# Spojení výsledků do jedné tabulky
+# Spojeni vysledku do jedne tabulky
 vysledky <- rbindlist(Filter(Negate(is.null), vysledky))
 # vysledky <- lapply(soubory, function(soubor) {
 #   dt <- fread(soubor)
 #   if (!all(c("Trait", "Polygenic Risk Score") %in% names(dt))) {
-#     message("Přeskakuji soubor: ", basename(soubor), " (chybí sloupce)")
+#     message("Preskakuji soubor: ", basename(soubor), " (chybi sloupce)")
 #     return(NULL)
 #   }
 #   dt_filtr <- dt[Trait %in% traits_zajem]
@@ -102,7 +102,7 @@ create_box_plots_pgs <- function(path){
   vsechna_data <- lapply(soubory, function(soubor) {
     dt <- fread(soubor)
     if (!all(c("Trait", "Percentile") %in% names(dt))) {
-      message("Přeskakuji soubor (chybí sloupce): ", basename(soubor))
+      message("Preskakuji soubor (chybi sloupce): ", basename(soubor))
       return(NULL)
     }
     dt[, Skore := sapply(`Polygenic Risk Score`, zpracuj_skore)]
@@ -139,5 +139,5 @@ create_box_plots_pgs <- function(path){
 median_list <- vysledky[, median(`Polygenic Risk Score`, na.rm = TRUE), by = Pacient]
 setnames(median_list, "V1", "median_PRS")
 
-# Sloučení s původní tabulkou podle Sample
+# Sloucení s puvodni tabulkou podle Sample
 v3 <- merge(vysledky, median_list, by = "Pacient", all.x = TRUE)

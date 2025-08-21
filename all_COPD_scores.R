@@ -4,7 +4,7 @@ library(dplyr)
 library(tidyr)
 library(ggplot2)
 
-#získání všech skore pro daný traint do 1 tabulky se všemi pacienty
+#ziskani vsech skore pro dany trait do tabulky pro kazdeho pacienta
 soubory <- list.files(path = paste0(getwd(),"/final_COPD"), pattern = "\\.tsv$", full.names = TRUE)
 seznam_dt <- lapply(soubory, fread)
 jmena_souboru <- basename(soubory)

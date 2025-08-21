@@ -97,10 +97,10 @@ PRS_distribution_plot <- function(data_trait,type){
       axis.text.y = element_blank(),
       axis.ticks.y = element_blank(),
       axis.title.y = element_blank(),
-      legend.position = c(0.02, 0.98),   # levý horní roh v rámci grafu
+      legend.position = c(0.02, 0.98),
       legend.justification = c(0, 1),
-      legend.background = element_blank(),   # žádné pozadí
-      legend.key = element_blank()           # žádný rámeček okolo čárek
+      legend.background = element_blank(), 
+      legend.key = element_blank()          
     )
 }
 
@@ -152,10 +152,10 @@ Percentile_distribution_plot <- function(data_trait,type){
       axis.text.y = element_blank(),
       axis.ticks.y = element_blank(),
       axis.title.y = element_blank(),
-      legend.position = c(0.02, 0.98),   # levý horní roh v rámci grafu
+      legend.position = c(0.02, 0.98),   
       legend.justification = c(0, 1),
-      legend.background = element_blank(),   # žádné pozadí
-      legend.key = element_blank()           # žádný rámeček okolo čárek
+      legend.background = element_blank(),  
+      legend.key = element_blank()          
     )
 }
 
