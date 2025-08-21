@@ -1,0 +1,2 @@
+- shell script to compute PRS for COPD
+- R scripts to analyse the results (distribution of PRS scores, visualizations, cluster analysis)
