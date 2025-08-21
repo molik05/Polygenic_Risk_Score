@@ -1,2 +1,2 @@
-- shell script to compute PRS for COPD
+- shell scripts to compute PRS for COPD and other diseases or for preparation of data
 - R scripts to analyse the results (distribution of PRS scores, visualizations, cluster analysis)
